@@ -1,0 +1,41 @@
+{% extends 'commons/base.html' %}
+{% from 'commons/macros.html' import macro_content_title %}
+
+{% block content_title %}
+    {{ macro_content_title("库表权限设置") }}
+{% endblock %}
+
+<!-- in container-fluid div tag -->
+{% block content %}
+	<div class="row-fluid">
+		<ul class="breadcrumb">
+			<li><a href="detail?role_id={{data.role.id}}">返回上级角色[{{data.role.role_name}}]</a> 
+			<span class="divider">/</span></li>
+		</ul>
+		<div class="well">
+		<form method="POST" id="edit_form">
+			<input type="hidden" id="parent_id" name="parent_id" value={{data.role.id}}>
+			<label>角色类型:</label>
+			<select name="role_type" id="role_type" class="input">
+					<option value=0>一般用户</option>
+					<option value=1>部门组织</option>
+			</select>
+			<label>角色名称:</label>
+			<input type="text" id="role_name" name="role_name">
+		</div>
+		</form>
+		<div class="btn-toolbar">
+			<button id="submit_btn" class="btn btn-primary">
+				<i class="icon-update"></i>提&nbsp交</button>
+			<div class="btn-group"></div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#submit_btn").click(function(){
+				$("#edit_form").attr("action","addrole?op=add")
+				$("#edit_form").submit()
+			});
+		});
+	</script>
+{% endblock %}

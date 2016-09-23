@@ -1,0 +1,32 @@
+{% extends 'commons/_proto.html' %}
+
+{% from 'commons/macros.html' import macro_navbar_title %}
+
+{% block body %}
+	<div class="navbar">
+		<div class="navbar-inner">
+			<ul class="nav pull-right">
+	
+			</ul>
+			{{ macro_navbar_title() }}
+		</div>
+	</div>
+	
+	<div class="row-fluid">
+		<div class="dialog">
+			<div class="block">
+				<p class="block-heading">用户登陆</p>
+				<div class="block-body">
+		 	        <form method='POST'>
+						<label>用户名</label>
+						<input type="text" class="span12" name="name">
+						<label>密  码</label>
+						<input type="password" class="span12" name="password">
+	 	         		<button type="submit" class="btn btn-primary pull-right">登入</button>
+						<div class="clearfix"></div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

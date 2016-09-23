@@ -1,0 +1,41 @@
+{% extends 'commons/base.html' %}
+{% from 'commons/macros.html' import macro_content_title %}
+{% from 'commons/macros.html' import macro_content_del_alert %}
+{% from 'commons/macros.html' import macro_content_render_table %}
+
+{% block content_title %}
+    {{ macro_content_title("角色列表") }}
+{% endblock %}
+
+<!-- in container-fluid div tag -->
+{% block content %}
+	<div class="row-fluid">
+		<div class="well">
+			<table class="table">
+				<thead>
+					<tr>
+						<td>角色ID</td>
+						<td>角色名称</td>
+						<td>角色类型</td>
+					</tr>
+				</thead>
+				<tbody>
+					{% for r in data.roles %}
+						<tr>
+							<td>{{ r.id }}</td>
+							<td>{{ r.role_name }}</td>
+							{% if r.role_type in [0] %}
+								<td>一般用户</td>
+							{% else %}
+								<td>部门组织</td>
+							{% endif %}
+								<td>
+									<a href="detail?role_id={{r.id}}"> 查看详情 </a>
+								</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			<table>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+*.pyc
+*.swp
+*.log
+logs/
+node_modules/
+.idea/
+*.taskd
+pid

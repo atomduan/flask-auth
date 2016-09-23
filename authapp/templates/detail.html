@@ -1,0 +1,143 @@
+{% extends 'commons/base.html' %}
+{% from 'commons/macros.html' import macro_content_title %}
+{% from 'commons/macros.html' import macro_content_del_alert %}
+{% from 'commons/macros.html' import macro_content_render_table %}
+
+{% block content_title %}
+    {{ macro_content_title("角色详情") }}
+{% endblock %}
+
+<!-- in container-fluid div tag -->
+{% block content %}
+	<div class="row-fluid">
+		<div class="well">
+			<b>role path : </b>
+			<br><br>
+			{% set indent = "|---->" %}
+			{% if data.role_path %}
+				{% for r in data.role_path %}
+					{% if r.parent_id %}
+						<ul>......<ul>
+					{% endif %}
+					<ul>{{ indent }}
+						<a href="detail?role_id={{r.id}}&pred_id={{data.pred_id}}">
+							{% if r.id == data.role_id | int %}
+								<b>{{ r.role_name }}</b>
+							{% else %}
+								{{ r.role_name }}
+							{% endif %}
+						</a>
+						{% if r.role_type in [1] %}
+						&nbsp&nbsp<a href="addrole?role_id={{r.id}}">(添加角色)</a>
+						{% endif %}
+					<ul>
+					{% set indent = "    "+indent %}
+				{% endfor %}
+			{% endif %}
+		</div>
+		{% if data.children %}
+		<div class="well">
+			<b>子角色列表:</b>
+			<table class="table">
+				<thead>
+					<tr>
+						<td>角色ID</td>
+						<td>角色名称</td>
+						<td>角色类型</td>
+					</tr>
+				</thead>
+				<tbody>
+					{% for r in data.children %}
+						<tr>
+							<td>{{ r.id }}</td>
+							<td>{{ r.role_name }}</td>
+							{% if r.role_type in [0] %}
+								<td>一般用户</td>
+							{% else %}
+								<td>部门组织</td>
+							{% endif %}
+								<td>
+									<a href="detail?role_id={{r.id}}"> 查看详情 </a>
+								</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% endif %}
+		<div class="well">
+			<b>操作规则语法 :</b><br>
+			operate_type: {
+				<br>&nbsp&nbsp&nbsp&nbsp * | all | read | write
+			<br>}
+			<br>
+			<b>资源规则语法 :</b><br>
+			resource_level: {
+			<br>&nbsp&nbsp&nbsp&nbsp * | db_name.* | db_name.tbl_name
+			<br>}
+			<br>
+			<b>角色规则语法 :</b><br>
+			role_path_specification: {
+				<br>&nbsp&nbsp&nbsp&nbsp role_spec[.role_spec] ... | **.role_spec[.role_spec] ...
+			<br>}
+			<br>
+			role_spec: {
+				<br>&nbsp&nbsp&nbsp&nbsp [0-9|a-z|A-Z|-|_]+ | [*][role_spec[*]] ...	
+			<br>}
+		</div>
+		<div class="well">
+			<table class="table">
+				<thead>
+					<tr>
+						<td>规则ID</td>
+						<td>操作规则</td>
+						<td>资源规则</td>
+						<td>角色规则</td>
+						<td>规则状态</td>
+					</tr>
+				</thead>
+				<tbody id="principals">
+					{% if data.principals %}
+						{% for p in data.principals %}
+							<tr id="p_{{p.id}}">
+								<td>{{ p.id }}</td>
+								<td id="opt_p">{{ p.operation_principal }}</td>
+								<td id="res_p">{{ p.resource_principal }}</td>
+								<td id="rol_p">{{ p.role_principal }}</td>
+								{% if p.principal_status in [0] %}
+									<td>
+										<font color="green">已经生效</font>
+									</td>
+								{% else %}
+									<td>
+										<font color="red">已经禁用</font>
+									</td>
+								{% endif %}
+								<td id="opt">
+									<a onclick="show_modify_principal_form({{p.id}})">修改</a> / 
+									{% if p.principal_status in [0] %}
+										<a href="chstatus?pid={{p.id}}&op=revoke">禁用</a> / 
+									{% else %}
+										<a href="chstatus?pid={{p.id}}&op=activate">生效</a> / 
+									{% endif %}
+									<a href="deleteprincipal?pid={{p.id}}">删除</a>
+								</td>
+							</tr>
+						{% endfor %}
+					{% endif %}
+				</tbody>
+			</table>
+		</div>
+		<div class="btn-toolbar">
+			<button id="add_principal_btn" class="btn btn-primary pull-right" onclick="add_principal({{data.role_id}})">
+				<i class="icon-plus"></i>新增
+			</button>
+			<div class="btn-group"></div>
+	</div>
+	<form method="POST" id="modify_principal_form"> 
+		<textarea name="form_json_text" id="form_json_text" style="display:none"></textarea>
+	</form>
+	<form method="POST" id="authorize_form"> 
+		<textarea name="authorize_text" id="authorize_text" style="display:none"></textarea>
+	</form>
+{% endblock %}

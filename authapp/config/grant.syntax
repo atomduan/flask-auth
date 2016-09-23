@@ -1,0 +1,30 @@
+GRANT
+	operate_type [, operate_type] ...
+ON 
+	resource_level [, resource_level] ...
+TO 
+	role_path_specification [, role_path_specification] ...
+AT
+	role_id
+
+role_id {
+	NUMBER_STRING
+}
+
+operate_type: {
+	* | all | read | write
+}
+
+resource_level: {
+	* | *.* | db_name.* | db_name.tbl_name
+}
+
+role_path_specification: {
+	role_spec[.role_spec] ...
+	| *role_spec[.role_spec] ...
+	| **.role_spec[.role_spec] ...
+}
+
+role_spec {
+	[a-zA-Z]+[-|_]{0,1} | role_spec[*role_spec] ...
+}

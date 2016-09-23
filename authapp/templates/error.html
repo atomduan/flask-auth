@@ -1,0 +1,28 @@
+{% extends 'commons/_proto.html' %}
+
+{% from 'commons/macros.html' import macro_navbar_title %}
+
+{% block body %}
+	<div class="navbar">
+		<div class="navbar-inner">
+			<ul class="nav pull-right">
+	
+			</ul>
+			{{ macro_navbar_title() }}
+		</div>
+	</div>
+
+	<div class="row-fluid">
+	    <div class="http-error">
+	        <div class="http-error-message">
+	            <div class="error-caption">
+	                <p>Oops! Baby...</p>
+	            </div>
+	            <div class="error-message">
+	                <p>Message:[ {{ msg }} ]<p>
+	                <p class="return-home"><a href="{{url}}">返回上页</a></p>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+{% endblock %}

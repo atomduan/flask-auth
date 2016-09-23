@@ -1,0 +1,171 @@
+{% macro macro_foo() -%}
+{%- endmacro %}
+
+{% macro macro_navbar_title() -%}
+	<a class="brand" href="index"><span class="first">宜信</span> <span class="second">权限管理平台</span></a>
+{%- endmacro %}
+
+{% macro macro_content_title(title) -%}
+	<ul class="breadcrumb">{{ title }}</ul>
+{%- endmacro %}
+
+{% macro macro_content_del_alert() -%}
+	<div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">删除提醒</h3>
+		</div>
+		<div class="modal-body">
+			<p class="error-text"><i class="icon-warning-sign modal-icon"></i>敏感操作：你确认要删除本表?</p>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+			<button class="btn btn-danger" data-dismiss="modal">删除</button>
+		</div>
+	</div>
+{%- endmacro %}
+
+{% macro macro_content_render_thead(table) -%}
+	<thead>
+		<tr>
+			{% for r in table %}
+				{% if loop.first %}
+					{% for k, v in r.iteritems() | sort %}
+						{% if k is upper %}
+							<th>{{ k }}</th>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+			{% endfor %}
+		</tr>
+	</thead>
+{%- endmacro %}
+
+{% macro macro_content_render_table(table) -%}
+	{{ macro_content_render_thead(table) }}
+	<tbody>
+		{% for r in table %}
+			<tr>
+				{% for k, v in r.iteritems() | sort %}
+					{% if k is upper %}
+						<td>{{ v }}</td>
+					{% endif %}
+				{% endfor %}
+				<td>
+					{% for e in r.opt %}
+						<a href={{e.url}} role="button" data-toggle="modal"><i class="{{e.icon}}"></i></a>
+					{% endfor %}
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+{%- endmacro %}
+
+{% macro macro_content_script_row_index_list(row) -%}
+	<tr>
+		<td>
+			{{row.name}}
+		</td>
+		<td>
+			{{row.field_type}}
+		</td>
+		<td>
+			{{row.is_primary}}
+		</td>
+		<td>
+			{{row.is_partition}}
+		</td>
+		<td>
+			{{row.comments}}
+		</td>
+	</tr>
+{%- endmacro %}
+
+{% macro macro_content_script_row_plain(row) -%}
+	<tr>
+		<td> {{row.name}} </td>
+		<td> {{row.field_type}} </td>
+		<td> {{row.is_primary}} </td>
+		<td> {{row.is_partition}} </td>
+		<td> {{row.comments}} </td>
+	</tr>
+{%- endmacro %}
+
+{% macro macro_content_script_row_index(row, index) -%}
+	<tr>
+		<input type='hidden' id='id' name='id' value={{row.id}}>
+		<td>
+			<input type='text' id='name' name='name' class='span8' value={{row.name}}>
+		</td>
+		<td>
+			<input type='text' id='field_type' name='field_type' class='span8' value={{row.field_type}}>
+		</td>
+		<td>
+			<select name='is_primary' id='is_primary' class='span12'>
+				{% if row.is_primary in [0] %}
+					<option value='1'>是</option>
+					<option selected='selected' value='0'>否</option>
+				{% else %}
+					<option selected='selected' value='1'>是</option>
+					<option value='0'>否</option>
+				{% endif %}
+			</select>
+		</td>
+		<td>
+			<select name='is_partition' id='is_partition' class='span12'>
+				{% if row.is_partition in [0] %}
+					<option value='1'>是</option>
+					<option selected='selected' value='0'>否</option>
+				{% else %}
+					<option selected='selected' value='1'>是</option>
+					<option value='0'>否</option>
+				{% endif %}
+			</select>
+		</td>
+		<td>
+			<textarea id='comments' name='comments' rows='1' class='span16'>{{row.comments}}</textarea>
+		</td>
+	</tr>
+{%- endmacro %}
+
+{% macro macro_content_script_row(row,sep) -%}
+	<tr>{{sep}}
+		<input type='hidden' id='id' name='id' value={{row.id}}>{{sep}}
+		<td>{{sep}}
+			<input type='text' id='name' name='name' class='span8' value={{row.name}}>{{sep}}
+		</td>{{sep}}
+		<td>{{sep}}
+			<input type='text' id='field_type' name='field_type' class='span8' value={{row.field_type}}>{{sep}}
+		</td>{{sep}}
+		<td>{{sep}}
+			<select name='is_primary' id='is_primary' class='span12'>{{sep}}
+				<option value='1'>是</option>{{sep}}
+				<option selected='selected' value='0'>否</option>{{sep}}
+			</select>{{sep}}
+		</td>{{sep}}
+		<td>{{sep}}
+			<select name='is_partition' id='is_partition' class='span12'>{{sep}}
+				<option value='1'>是</option>{{sep}}
+				<option selected='selected' value='0'>否</option>{{sep}}
+			</select>{{sep}}
+		</td>{{sep}}
+		<td>{{sep}}
+			<textarea id='comments' name='comments' rows='1' class='span16' value={{row.comments}}></textarea>{{sep}}
+		</td>{{sep}}
+		<td>{{sep}}
+			<i class='icon-remove' onclick='deleteTr(this);'></i>{{sep}}
+		</td>{{sep}}
+	</tr>{{sep}}
+{%- endmacro %}
+
+{% macro macro_content_script_add_field(row) -%}
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#add_field_btn").click(function(){
+				$("#fields_table").append("\
+					{{ macro_content_script_row(row, '\\') }}
+				");
+			});
+		});
+	</script>
+{%- endmacro %}

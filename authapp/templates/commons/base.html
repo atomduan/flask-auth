@@ -1,0 +1,23 @@
+{% extends 'commons/_proto.html' %}
+
+{% from 'commons/navbar.html' import macro_body_navbar %}
+{% from 'commons/footer.html' import macro_body_footer %}
+{% from 'commons/sidebar.html' import macro_body_sidebar %}
+
+{% block body %}
+	<div id="navbar" class="navbar">
+		{{ macro_body_navbar() }}
+	</div>
+	<div id="sidebar" class="sidebar-nav">
+		{{ macro_body_sidebar() }}
+	</div>
+	<div id="content" class="content">
+		{% block content_title %}
+		{% endblock %}
+		<div class="container-fluid">
+			{% block content %}
+			{% endblock %}
+			{{ macro_body_footer() }}
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% macro macro_body_sidebar() -%}
+	<form class="search form-inline" action="search" method="POST">
+		<input type="text" placeholder="Search Role..." name="keyword"/>
+	</form>
+    <a href="#dashboard-menu" class="nav-header" data-toggle="collapse"><i class="icon-dashboard"></i>总控制台</a>
+    <ul id="dashboard-menu" class="nav nav-list collapse in">
+        <li><a href="index">库表权限</a></li>
+    </ul>
+
+    <a href="#accounts-menu" class="nav-header" data-toggle="collapse"><i class="icon-briefcase"></i>个人信息</a>
+    <ul id="accounts-menu" class="nav nav-list collapse">
+        <li><a href="/logout">登出</a></li>
+    </ul>
+{%- endmacro %}

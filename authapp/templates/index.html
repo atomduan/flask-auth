@@ -1,0 +1,13 @@
+{% extends 'commons/base.html' %}
+{% from 'commons/macros.html' import macro_content_title %}
+{% from 'commons/macros.html' import macro_content_del_alert %}
+{% from 'commons/macros.html' import macro_content_render_table %}
+
+{% block content_title %}
+    {{ macro_content_title("库表权限设置") }}
+{% endblock %}
+
+<!-- in container-fluid div tag -->
+{% block content %}
+<p> <--- 请在搜索框进行角色搜索 </p>
+{% endblock %}
