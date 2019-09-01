@@ -25,19 +25,19 @@ def default():
 @app.route('/index', methods = ['GET'])
 @interceptor(login_required = True)
 def index():
-	data = mod_search.listall(request)
-	return render_template('search.html', data = data)
+    data = mod_search.listall(request)
+    return render_template('search.html', data = data)
 
 @app.route('/login', methods = ['GET', 'POST'])
 @interceptor(login_required = False)
 def login():
     if request.method == 'POST':
         if mod_login.service(request):
-	    return redirect(url_for('index'))
+        return redirect(url_for('index'))
         else:
             return render_template('error.html',msg = 'login error')
     else: 
-	return render_template('login.html')
+    return render_template('login.html')
 
 @app.route('/logout', methods = ['GET', 'POST'])
 @interceptor(login_required = False)
@@ -51,7 +51,7 @@ def error():
     msg = request.args.get('msg')
     url = request.args.get('url')
     return render_template('error.html', 
-    		msg = dmsg if msg is None else msg, url = url)
+            msg = dmsg if msg is None else msg, url = url)
 
 @app.route('/result', methods = ['GET', 'POST'])
 @interceptor(login_required = True)

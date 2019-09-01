@@ -22,17 +22,17 @@ def password_digest(password):
     return m.hexdigest()
 
 def get_arg(request, key, default=None):
-	arg = default
-	if request.method == 'POST':
-		if request.form.has_key(key):
-			arg = request.form[key]
-	else:
-		try :
-			arg = request.args.get(key)
-		except Exception, msg:
-			traceback.print_exc()
-	return default if arg == None or arg == '' else arg
+    arg = default
+    if request.method == 'POST':
+        if request.form.has_key(key):
+            arg = request.form[key]
+    else:
+        try :
+            arg = request.args.get(key)
+        except Exception, msg:
+            traceback.print_exc()
+    return default if arg == None or arg == '' else arg
 
 def redirect_url(default='index'):
-	ref = request.referrer
-	return ref if ref != None else url_for(default)
+    ref = request.referrer
+    return ref if ref != None else url_for(default)
